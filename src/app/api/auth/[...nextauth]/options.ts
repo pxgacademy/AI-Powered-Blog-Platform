@@ -43,6 +43,19 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
 
+  callbacks: {
+    async session({ session, token }) {
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token._id = user._id?.toString();
+      }
+
+      return token;
+    },
+  },
+
   pages: {
     signIn: "/signin",
   },
@@ -50,4 +63,6 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
+
+  secret: process.env.NEXTAUTH_SECRET,
 };
