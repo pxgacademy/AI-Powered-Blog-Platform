@@ -9,8 +9,8 @@ export async function POST(request: Request) {
   try {
     const { name, email, password } = await request.json();
 
-    const existingUserByEmail = await UserModel.findOne({ email });
-    if (existingUserByEmail)
+    const existingUser = await UserModel.findOne({ email });
+    if (existingUser)
       return api_response(false, "User already exist with this email", 400);
 
     const hashedPassword = await hash(password, 10);

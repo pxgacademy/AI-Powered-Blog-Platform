@@ -16,12 +16,18 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Loader2 } from "lucide-react";
+import { useAppDispatch } from "@/states/hooks";
+import { useSignUpUserMutation } from "@/states/myApi";
+import { setUser } from "@/states/userSlice";
+import { toast } from "sonner";
 
 // Infer the form type from the Zod schema
 type SignUpFormValues = z.infer<typeof SignUpSchema>;
 
 export default function SignupPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const dispatch = useAppDispatch();
+  const [registerUser] = useSignUpUserMutation();
 
   // zod implementation
   const form = useForm<SignUpFormValues>({
@@ -34,7 +40,18 @@ export default function SignupPage() {
   });
 
   const onSubmit = async (data: SignUpFormValues) => {
-    console.log(data);
+    try {
+      const user = await registerUser(data).unwrap();
+      dispatch(setUser(user));
+      toast("Success", { description: "User created successfully" });
+
+      // eslint-disable-next-line
+    } catch (error: any) {
+      toast("Error", {
+        description:
+          error?.data?.error || error?.message || "Failed to register",
+      });
+    }
   };
 
   //
