@@ -1,7 +1,7 @@
-import { Post } from "./post.types";
+import { Blog } from "./post.types";
 
 export interface ApiResponse {
   success: boolean;
   message: string;
-  posts?: Array<Post>;
+  posts?: Array<Blog>;
 }
