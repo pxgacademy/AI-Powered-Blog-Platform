@@ -18,6 +18,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useAppDispatch } from "@/states/hooks";
+import { useSignInUserMutation } from "@/states/myApi";
+import { setUser } from "@/states/userSlice";
 
 // Infer the form type from the Zod schema
 type SignInFormValues = z.infer<typeof SignInSchema>;
@@ -26,18 +29,36 @@ type SignInFormValues = z.infer<typeof SignInSchema>;
 //
 
 export default function SigninPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const [loginUser] = useSignInUserMutation();
+  const { replace: redirect } = useRouter();
 
   // zod implementation
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(SignInSchema),
     defaultValues: {
-      identifier: "",
+      email: "",
       password: "",
     },
   });
 
-  const onSubmit = async ({ identifier, password }: SignInFormValues) => {};
+  const onSubmit = async (data: SignInFormValues) => {
+    setIsSubmitting(true);
+
+    try {
+      const user = await loginUser(data).unwrap();
+      dispatch(setUser(user));
+      console.log(user);
+      toast("Success", { description: "User logged in successfully" });
+      redirect(`/`);
+
+      //
+    } catch (error) {
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   //
   return (
@@ -54,13 +75,13 @@ export default function SigninPage() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* identifier */}
             <FormField
-              name="identifier"
+              name="email"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email or Username</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="type email or username" {...field} />
+                    <Input placeholder="john@example.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

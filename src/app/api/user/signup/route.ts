@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 
     await newUser.save();
 
-    return api_response(true, "Successfully created user", 200);
+    return Response.json({ name, email });
 
     //
   } catch (error) {

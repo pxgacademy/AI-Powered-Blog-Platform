@@ -14,7 +14,10 @@ export async function POST(req: Request) {
     const validPass = await compare(password, user.password);
     if (!validPass) return api_response(false, "Invalid credentials", 401);
 
-    return Response.json(user, { status: 200 });
+    return Response.json(
+      { name: user.name, email: user.email },
+      { status: 200 }
+    );
   } catch (error) {
     console.log("Error from signin api route: ", error);
     return api_response(false, "Error logging in user", 500);

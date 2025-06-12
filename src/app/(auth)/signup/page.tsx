@@ -20,6 +20,7 @@ import { useAppDispatch } from "@/states/hooks";
 import { useSignUpUserMutation } from "@/states/myApi";
 import { setUser } from "@/states/userSlice";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // Infer the form type from the Zod schema
 type SignUpFormValues = z.infer<typeof SignUpSchema>;
@@ -28,6 +29,7 @@ export default function SignupPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useAppDispatch();
   const [registerUser] = useSignUpUserMutation();
+  const { replace: redirect } = useRouter();
 
   // zod implementation
   const form = useForm<SignUpFormValues>({
@@ -40,10 +42,12 @@ export default function SignupPage() {
   });
 
   const onSubmit = async (data: SignUpFormValues) => {
+    setIsSubmitting(true);
     try {
       const user = await registerUser(data).unwrap();
       dispatch(setUser(user));
       toast("Success", { description: "User created successfully" });
+      redirect(`/`);
 
       // eslint-disable-next-line
     } catch (error: any) {
@@ -51,6 +55,8 @@ export default function SignupPage() {
         description:
           error?.data?.error || error?.message || "Failed to register",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
