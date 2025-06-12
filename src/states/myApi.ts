@@ -1,23 +1,23 @@
-import { User } from "@/types/user.types";
+import { LoginInput, User, UserRegisterInput } from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const myAPIs = createApi({
-  reducerPath: "api",
+  reducerPath: "myApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "/api/",
   }),
   endpoints: (builder) => ({
-    signUpUser: builder.mutation<User, User>({
+    signUpUser: builder.mutation<User, UserRegisterInput>({
       query: (body) => ({
-        url: "signup",
+        url: "user/signup",
         method: "POST",
         body,
       }),
     }),
 
-    signInUser: builder.mutation<User, User>({
+    signInUser: builder.mutation<User, LoginInput>({
       query: (body) => ({
-        url: "signin",
+        url: "user/signin",
         method: "POST",
         body,
       }),

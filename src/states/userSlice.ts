@@ -1,22 +1,11 @@
+import { User } from "@/types";
 import {
   createAsyncThunk,
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
 
-export interface User {
-  name: string;
-  email: string;
-  password: string;
-}
-
-interface initialUserState {
-  user: User | null;
-}
-
-const initialState: initialUserState = {
-  user: null,
-};
+const initialState: { user: User | null } = { user: null };
 
 const userSlice = createSlice({
   name: "user",
