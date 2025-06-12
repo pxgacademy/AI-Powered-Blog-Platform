@@ -1,5 +1,5 @@
 import { User } from "@/types/user.types";
-import { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { PostSchema } from "./post.model";
 
 const UserSchema: Schema<User> = new Schema({
@@ -20,3 +20,9 @@ const UserSchema: Schema<User> = new Schema({
 
   messages: [PostSchema],
 });
+
+const UserModel =
+  (mongoose.models.User as mongoose.Model<User>) ||
+  mongoose.model("User", UserSchema);
+
+export default UserModel;
