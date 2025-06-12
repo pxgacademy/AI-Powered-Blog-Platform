@@ -45,9 +45,9 @@ export default function SigninPage() {
       <div className="w-full max-w-md space-y-8 bg-white rounded-lg shadow-md p-8">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-            Join Mystery Message
+            Magical Blog Platform
           </h1>
-          <p className="mb-4">Sign up to start your anonymous adventure</p>
+          <p className="mb-4">Sign in to start your blogging</p>
         </div>
 
         <Form {...form}>
@@ -82,20 +82,22 @@ export default function SigninPage() {
               )}
             />
 
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 w-4 animate-spin" /> Signing in...
-                </>
-              ) : (
-                "Signin"
-              )}
-            </Button>
+            <div className="flex justify-center">
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 w-4 animate-spin" /> Signing in...
+                  </>
+                ) : (
+                  "Signin"
+                )}
+              </Button>
+            </div>
           </form>
         </Form>
 
         <div>
-          <p>
+          <p className="text-center">
             Already a member?{" "}
             <Link href="/signin" className="text-blue-600 hover:text-blue-800">
               Signin

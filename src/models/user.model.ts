@@ -1,6 +1,5 @@
 import { User } from "@/types/user.types";
 import mongoose, { Schema } from "mongoose";
-import { PostSchema } from "./post.model";
 
 const UserSchema: Schema<User> = new Schema(
   {
@@ -18,8 +17,6 @@ const UserSchema: Schema<User> = new Schema(
       type: String,
       required: [true, "Password is required"],
     },
-
-    messages: [PostSchema],
   },
   { timestamps: true }
 );
