@@ -15,10 +15,10 @@ export const blogApi = createApi({
       }),
     }),
 
-    getBlogs: builder.mutation<Blog[], void>({
+    getBlogs: builder.query<Blog[], void>({
       query: () => "/list",
     }),
   }),
 });
 
-export const { useCreateBlogMutation, useGetBlogsMutation } = blogApi;
+export const { useCreateBlogMutation, useGetBlogsQuery } = blogApi;

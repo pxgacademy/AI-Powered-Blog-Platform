@@ -18,9 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useAppDispatch } from "@/states/hooks";
-import { useSignInUserMutation } from "@/states/myApi";
-import { setUser } from "@/states/userSlice";
+import { signIn } from "next-auth/react";
 
 // Infer the form type from the Zod schema
 type SignInFormValues = z.infer<typeof SignInSchema>;
@@ -30,8 +28,6 @@ type SignInFormValues = z.infer<typeof SignInSchema>;
 
 export default function SigninPage() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
-  const [loginUser] = useSignInUserMutation();
   const { replace: redirect } = useRouter();
 
   // zod implementation
@@ -43,18 +39,24 @@ export default function SigninPage() {
     },
   });
 
-  const onSubmit = async (data: SignInFormValues) => {
+  const onSubmit = async ({ email, password }: SignInFormValues) => {
     setIsSubmitting(true);
 
     try {
-      const user = await loginUser(data).unwrap();
-      dispatch(setUser(user));
-      console.log(user);
-      toast("Success", { description: "User logged in successfully" });
-      redirect(`/`);
+      const res = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
 
-      //
-    } catch (error) {
+      if (res?.ok) {
+        toast("Success", { description: "User logged in successfully" });
+        redirect(`/`);
+      }
+
+      // eslint-disable-next-line
+    } catch (error: any) {
+      toast.error("Error", { description: error?.message });
     } finally {
       setIsSubmitting(false);
     }

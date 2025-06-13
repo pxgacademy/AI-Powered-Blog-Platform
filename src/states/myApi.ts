@@ -25,4 +25,15 @@ export const myAPIs = createApi({
   }),
 });
 
+export const sessionApi = createApi({
+  reducerPath: "sessionApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "/api/auth", credentials: "include" }),
+  endpoints: (builder) => ({
+    getSessionUser: builder.query<{ user: User | null }, void>({
+      query: () => "/session-user",
+    }),
+  }),
+});
+
 export const { useSignUpUserMutation, useSignInUserMutation } = myAPIs;
+export const { useGetSessionUserQuery } = sessionApi;

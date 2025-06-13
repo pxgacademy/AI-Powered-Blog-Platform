@@ -1,17 +1,20 @@
 import dbConnect from "@/lib/db_connect";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../[...nextauth]/options";
 import UserModel from "@/models/user.model";
 import api_response from "@/components/response";
+import { getToken } from "next-auth/jwt";
+import { NextRequest } from "next/server";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     await dbConnect();
-    const session = await getServerSession(authOptions);
 
-    if (!session || !session.user?.email) return Response.json({ user: null });
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-    const user = await UserModel.findOne({ email: session.user.email }).select(
+    console.log(token);
+
+    if (!token || !token.email) return Response.json({ user: null });
+
+    const user = await UserModel.findOne({ email: token.email }).select(
       "-password"
     );
     return Response.json({ user });

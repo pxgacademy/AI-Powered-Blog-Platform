@@ -3,24 +3,14 @@
 import { Combobox } from "@/components/Combobox";
 import { DatePicker } from "@/components/DatePicker";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { BlogSchema } from "@/schemas/postSchema";
 import { useCreateBlogMutation } from "@/states/blogApi";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { selectCurrentUser } from "@/states/userSlice";
 import { Loader2 } from "lucide-react";
 import { FormEvent, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import { toast } from "sonner";
-import { z } from "zod";
 
 const apiLink =
   "https://api.imgbb.com/1/upload?key=e13fec8a5a7efc33a77d01b46d56c042";
@@ -32,10 +22,17 @@ export default function CreateBlogPost() {
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [image, setImage] = useState<File | null>(null);
 
+  const user = useSelector(selectCurrentUser);
+
+  console.log(user);
+
   const [crateBlog] = useCreateBlogMutation();
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!user) return toast.error("Error", { description: "Login please..." });
+
     if (!value || !content || !date || !image)
       return toast.error("Error", {
         description: "Fill the required value(s)",
@@ -58,8 +55,11 @@ export default function CreateBlogPost() {
         content,
         image: imageRes?.display_url,
         category: value,
-        date,
+        date: date.toString(),
+        email: user.email,
       };
+
+      await crateBlog(values).unwrap();
 
       //
     } catch (error: any) {

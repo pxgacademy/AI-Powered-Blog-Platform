@@ -23,5 +23,3 @@ export async function POST(req: Request) {
     return api_response(false, "Error logging in user", 500);
   }
 }
-
-//
