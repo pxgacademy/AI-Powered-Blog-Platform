@@ -11,8 +11,8 @@ export default function BlogListPage() {
   if (isLoading) return <p>Loading blog...</p>;
 
   return (
-    <div className="container mx-auto">
-      <h1 className="text-xl font-bold text-center my-4">Blog Details</h1>
+    <div className="container mx-auto pt-16">
+      <h1 className="text-xl font-bold text-center mb-4">Blog Details</h1>
 
       {blog && (
         <div className="border p-4 rounded mb-5">

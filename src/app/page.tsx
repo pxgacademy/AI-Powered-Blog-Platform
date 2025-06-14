@@ -9,7 +9,7 @@ export default function Home() {
   const { data: blogs, isLoading } = useGetBlogsQuery();
 
   return (
-    <main className="w-full h-full bg-gray-50 min-h-screen">
+    <main className="w-full h-full bg-gray-50 min-h-screen pt-16">
       <section className="container mx-auto px-5 sm:px-10 bg-gray-50 min-h-screen">
         <h2 className="text-5xl font-extrabold text-center">Blogs</h2>
 
