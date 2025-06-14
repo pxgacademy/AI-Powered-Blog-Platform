@@ -4,6 +4,10 @@ import { Schema } from "mongoose";
 
 export const BlogSchema: Schema<Blog> = new Schema(
   {
+    title: {
+      type: String,
+      required: true,
+    },
     content: {
       type: String,
       required: true,
@@ -20,6 +24,10 @@ export const BlogSchema: Schema<Blog> = new Schema(
       type: Date,
       required: true,
       default: Date.now,
+    },
+    email: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true }

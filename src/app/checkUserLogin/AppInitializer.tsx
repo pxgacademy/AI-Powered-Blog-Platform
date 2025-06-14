@@ -1,15 +1,18 @@
 "use client";
+
 import { useGetSessionUserQuery } from "@/states/myApi";
-import { setUser } from "@/states/userSlice";
+import { selectCurrentUser, setUser } from "@/states/userSlice";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function AppInitializer() {
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetSessionUserQuery();
+  const { data } = useGetSessionUserQuery();
+
+  const user = useSelector(selectCurrentUser);
 
   useEffect(() => {
-    if (data?.user) dispatch(setUser(data.user));
+    if (data?.user && !user) dispatch(setUser(data.user));
   }, [data, dispatch]);
 
   return null;

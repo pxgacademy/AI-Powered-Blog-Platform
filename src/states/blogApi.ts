@@ -1,4 +1,4 @@
-import { Blog, CreateBlogInput } from "@/types";
+import { Blog, CreateBlogInput, GeminiResponse } from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const blogApi = createApi({
@@ -18,7 +18,24 @@ export const blogApi = createApi({
     getBlogs: builder.query<Blog[], void>({
       query: () => "/list",
     }),
+
+    getSingleBlog: builder.query<Blog, string>({
+      query: (link) => `/get-single-blog/${link}`,
+    }),
+
+    getAiBlogRes: builder.mutation<GeminiResponse, { prompt: string }>({
+      query: (body) => ({
+        url: "/gemini-blog",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useCreateBlogMutation, useGetBlogsQuery } = blogApi;
+export const {
+  useCreateBlogMutation,
+  useGetBlogsQuery,
+  useGetSingleBlogQuery,
+  useGetAiBlogResMutation,
+} = blogApi;

@@ -10,8 +10,6 @@ export async function GET(req: NextRequest) {
 
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-    console.log(token);
-
     if (!token || !token.email) return Response.json({ user: null });
 
     const user = await UserModel.findOne({ email: token.email }).select(
