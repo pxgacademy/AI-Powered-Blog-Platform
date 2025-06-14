@@ -6,7 +6,7 @@
 - **zod** for managing types
 - **mongoose**
 
-
+```json
   "dependencies": {
     "@google/genai": "^1.4.0",
     "@hookform/resolvers": "^5.1.1",
@@ -36,3 +36,4 @@
     "tailwind-merge": "^3.3.1",
     "zod": "^3.25.63"
   },
+```
