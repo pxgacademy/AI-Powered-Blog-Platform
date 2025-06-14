@@ -21,6 +21,7 @@ import { useSignUpUserMutation } from "@/states/myApi";
 import { setUser } from "@/states/userSlice";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 // Infer the form type from the Zod schema
 type SignUpFormValues = z.infer<typeof SignUpSchema>;
@@ -45,9 +46,15 @@ export default function SignupPage() {
     setIsSubmitting(true);
     try {
       const user = await registerUser(data).unwrap();
-      dispatch(setUser(user));
-      toast("Success", { description: "User created successfully" });
-      redirect(`/`);
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+      });
+      if (res?.ok) {
+        toast("Success", { description: "User created successfully" });
+        redirect(`/`);
+      }
 
       // eslint-disable-next-line
     } catch (error: any) {

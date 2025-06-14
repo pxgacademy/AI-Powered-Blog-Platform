@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import AuthProvider from "@/context/AuthProvider";
 import ReduxProvider from "@/context/ReduxProvider";
+import AppInitializer from "./checkUserLogin/AppInitializer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
           <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
+            <AppInitializer />
             {children}
             <Toaster />
           </body>
