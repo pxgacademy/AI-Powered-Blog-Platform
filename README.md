@@ -3,7 +3,7 @@
 - **react-redux** for managing state 
 - **reduxjs/toolkit** (rtk query) for fetching data
 - **next-auth** for user management
-* **zod** for managing types
+- **zod** for managing types
 - **mongoose**
 
 
